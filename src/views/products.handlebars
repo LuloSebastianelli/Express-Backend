@@ -1,5 +1,23 @@
 <h1>Lista de productos</h1>
 
+<form action="/api/product" method="GET">
+        <label for="category">Filtrar por categoría:</label>
+        <select name="category" id="category">
+            <option value="">Todas las categorías</option>
+            <option value="Hogar" {{#eq info.categoryFilter 'Hogar'}}selected{{/eq}}>Hogar</option>
+            <option value="Electrónica" {{#eq info.categoryFilter 'Electrónica'}}selected{{/eq}}>Electrónica</option>
+            <option value="Deportes" {{#eq info.categoryFilter 'Deportes'}}selected{{/eq}}>Deportes</option>
+        </select>
+        <label for="sort">Ordenar por precio:</label>
+        <select name="sort" id="sort">
+            <option value="">Sin ordenar</option>
+            <option value="asc" {{#eq info.sort 'asc'}}selected{{/eq}}>Ascendente</option>
+            <option value="desc" {{#eq info.sort 'desc'}}selected{{/eq}}>Descendente</option>
+        </select>
+
+        <button type="submit">Aplicar</button>
+    </form>
+
 {{#if info.hasPrevPage}}
     <button><a href="{{info.prevLink}}">Página anterior</a></button>
 {{/if}}
@@ -14,7 +32,12 @@
     {{#each info.payload}}
         <li>
             <h2>{{this.code}} - {{this.title}}</h2>
+            <p>Precio: ${{this.price}}</p>
+            <p>Categoria: {{this.category}}</p>
             <button><a href="/api/product/{{this.code}}">Ver Producto</a></button>
         </li>
+        <form action="/api/product/{{this.code}}?_method=DELETE" method="POST">
+        <button type="submit">Eliminar</button>
+        </form>
     {{/each}}
 </ul>

@@ -18,7 +18,19 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.engine("handlebars", handlebars.engine());
+const hbs = handlebars.create({
+    helpers: {
+        eq: function (a, b, options) {
+            if (a === b) {
+                return options.fn(this); // Ejecuta el bloque principal si son iguales
+            } else if (options.inverse) {
+                return options.inverse(this); // Ejecuta el bloque {{else}} si existe
+            }
+            return ''; // Si no hay bloque {{else}}, devuelve una cadena vacía
+        },
+    },
+});
+app.engine("handlebars", hbs.engine);
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 

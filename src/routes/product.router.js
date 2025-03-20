@@ -9,11 +9,26 @@ router.get("/", async (req, res) => {
         const elementosPorPagina = req.query.limit ?? 10;
         const pagActual = req.query.page ?? 1;
 
+        const categoryFilter = req.query.category ?? ''; 
+
+        const query = {};
+        if (categoryFilter) {
+            query.category = categoryFilter; 
+        }
+
+        const sortField = 'price'; 
+        const sortOrder = req.query.sort === 'desc' ? -1 : 1;
+        const sort = {};
+        if (req.query.sort) {
+            sort[sortField] = sortOrder; 
+        }
+
         let infoPaginate = await productModel.paginate(
-            {},
+            query,
             {
                 limit: Number(elementosPorPagina),
-                page: Number(pagActual)
+                page: Number(pagActual),
+                sort: sort
             }
         );
 
@@ -28,8 +43,8 @@ router.get("/", async (req, res) => {
             page: infoPaginate.page, 
             hasPrevPage: infoPaginate.hasPrevPage, 
             hasNextPage: infoPaginate.hasNextPage, 
-            prevLink: infoPaginate.hasPrevPage ? `/api/product?page=${infoPaginate.prevPage}&limit=${elementosPorPagina}` : null, // Link directo a la página previa
-            nextLink: infoPaginate.hasNextPage ? `/api/product?page=${infoPaginate.nextPage}&limit=${elementosPorPagina}` : null // Link directo a la página siguiente
+            prevLink: infoPaginate.hasPrevPage ? `/api/product?page=${infoPaginate.prevPage}&limit=${elementosPorPagina}` : null, 
+            nextLink: infoPaginate.hasNextPage ? `/api/product?page=${infoPaginate.nextPage}&limit=${elementosPorPagina}` : null 
         };
 
         res.status(200).render('products', {info: response});
@@ -89,7 +104,7 @@ router.delete('/:code', async (req, res) => {
             return res.status(404).render('error', {error: "No se encontro el producto a eliminar"})
         }
         console.log(`Producto con id ${req.params.code} eliminado exitosamente`);
-        res.redirect('/product');
+        res.redirect('/api/product');
     } catch (error) {
         console.error(error);
         return res.status(500).render('error',{error: "Error al eliminar el producto"})
