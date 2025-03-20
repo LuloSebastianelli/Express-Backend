@@ -1,0 +1,20 @@
+<h1>Lista de productos</h1>
+
+{{#if info.hasPrevPage}}
+    <button><a href="{{info.prevLink}}">Página anterior</a></button>
+{{/if}}
+<p>Pagina {{info.page}} de {{info.totalPages}}</p>
+{{#if info.hasNextPage}}
+    <button><a href="{{info.nextLink}}">Página siguiente</a></button>
+{{/if}}
+
+<h2>Productos</h2>
+
+<ul>
+    {{#each info.payload}}
+        <li>
+            <h2>{{this.code}} - {{this.title}}</h2>
+            <button><a href="/api/product/{{this.code}}">Ver Producto</a></button>
+        </li>
+    {{/each}}
+</ul>
