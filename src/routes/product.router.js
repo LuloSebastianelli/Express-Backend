@@ -61,7 +61,8 @@ router.get('/:code', async (req, res) => {
         if(!product){
             return res.status(404).render('error',{error: "Error al encontrar el producto solicitado"})
         }
-        res.status(200).render('product', {product: product.toObject()});
+        const cartId = req.query.cartId;
+        res.status(200).render('product', {product: product.toObject(), cartId: cartId});
     } catch (error) {
         console.error(error);
         return res.status(400).render('error',{error: "Error al obtener el producto solicitado"})

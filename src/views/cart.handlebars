@@ -3,9 +3,9 @@
 <ul>
     {{#each cart.products}}
         <li>
-                    <h2>{{this.title}}</h2>
-                    <p>Precio: ${{this.price}}</p>
-                    <p>Cantidad: {{this.quantity}}</p>
-                </li>
+            <h2>{{this.product.title}}</h2>
+            <p>Precio: ${{this.product.price}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+        </li>
     {{/each}}
 </ul>

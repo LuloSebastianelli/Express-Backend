@@ -9,10 +9,11 @@ const router = Router();
 router.get('/:cid', async (req, res) => {
     try {
         const cid = req.params.cid
-        const carrito = await cartModel.findById(cid).populate('products').lean();
+        const carrito = await cartModel.findById(cid).populate({path: 'products.product', model: 'products'}).lean();
         if(!carrito){
             return res.status(404).render('error', {error: "No se encontro el carrito"})
         }
+        console.log("Carrito con populate:", carrito);
         res.render('cart', {cart: carrito})
     } catch (error) {
         console.error(error);
