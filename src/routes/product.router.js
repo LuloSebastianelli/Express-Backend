@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
         res.status(200).render('products', {info: response});
     } catch (error) {
         console.error(error);
-        res.status(500).render('error', {error: "Error al obtener todos los productos"});
+        res.status(400).render('error', {error: "Error al obtener todos los productos"});
     }
 });
 
@@ -64,7 +64,21 @@ router.get('/:code', async (req, res) => {
         res.status(200).render('product', {product: product.toObject()});
     } catch (error) {
         console.error(error);
-        return res.status(500).render('error',{error: "Error al obtener el producto solicitado"})
+        return res.status(400).render('error',{error: "Error al obtener el producto solicitado"})
+    }
+})
+
+//ver un producto por id
+router.get('/products/:pid', async (req, res) => {
+    try {
+        const product = await productModel.findById(req.params.pid)
+        if(!product){
+            return res.status(404).render('error',{error: "Error al encontrar el producto solicitado"})
+        }
+        res.status(200).render('product', {product: product.toObject()});
+    } catch (error) {
+        console.error(error);
+        return res.status(400).render('error',{error: "Error al obtener el producto solicitado"})
     }
 })
 
@@ -77,7 +91,7 @@ router.post('/', async (req, res) => {
         res.status(201).render('product', {product : productoNuevo.toObject()})
     } catch (error) {
         console.error(error);
-        return res.status(500).render('error',{error: "Error al crear el producto"})
+        return res.status(400).render('error',{error: "Error al crear el producto"})
     }
 })
 
@@ -92,9 +106,11 @@ router.put('/:code', async (req, res) => {
         res.status(200).json({ message: "Producto actualizado correctamente", producto: productoActualizado });
     } catch (error) {
         console.error(error);
-        return res.status(500).render('error',{error: "Error al modificar el producto"})
+        return res.status(400).render('error',{error: "Error al modificar el producto"})
     }
 });
+
+
 
 //eliminar un producto
 router.delete('/:code', async (req, res) => {
@@ -107,7 +123,7 @@ router.delete('/:code', async (req, res) => {
         res.redirect('/api/product');
     } catch (error) {
         console.error(error);
-        return res.status(500).render('error',{error: "Error al eliminar el producto"})
+        return res.status(400).render('error',{error: "Error al eliminar el producto"})
     }
 })
 

@@ -4,7 +4,11 @@
     <p>Descripción: {{product.description}}</p>
     <p>Categoria: {{product.category}}</p>
     <p>Stock: {{product.stock}}</p>
-    <form action="/api/product/{{product.code}}?_method=DELETE" method="POST">
-        <button type="submit">Eliminar</button>
-    </form>
+    <form action="/api/cart/{{cartId}}/product/{{product._id}}" method="POST">
+            <input type="hidden" name="cartId" value="{{cartId}}">
+            <button type="submit">Agregar al carrito</button>
+        </form>
+        <form action="/api/product/{{product.code}}?_method=DELETE" method="POST">
+            <button type="submit">Eliminar</button>
+        </form>
 </div>

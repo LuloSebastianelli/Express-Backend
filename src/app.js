@@ -4,6 +4,7 @@ import path from "path";
 import __dirname from "./utils.js";
 import viewsRouter from "./routes/views.router.js";
 import productRouter from "./routes/product.router.js";
+import cartRouter from "./routes/cart.router.js";
 import mongoose from "mongoose";
 import methodOverride from 'method-override';
 
@@ -47,3 +48,4 @@ app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
 app.use("/", viewsRouter);
 app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
